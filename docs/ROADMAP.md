@@ -6,7 +6,7 @@
 
 ## Phase 0 — Ground Rules (Lock Before Building)
 
-- [ ] Confirm no backend integration (UI-only)
+- [X] Confirm no backend integration (UI-only)
 - [ ] Confirm persistence strategy (localStorage / IndexedDB / file)
 - [ ] Confirm Pass / Fail vocabulary set
 - [ ] Confirm Fail → comment required rule (non-negotiable)

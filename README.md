@@ -13,7 +13,7 @@ Redesign of a legacy ticket/customer review matrix UI.
 - Modern matrix + modal interaction
 
 ## Roadmap
-See [ROADMAP.md](./ROADMAP.md)
+See [ROADMAP.md](./docs/ROADMAP.md)
 
 
 ![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
