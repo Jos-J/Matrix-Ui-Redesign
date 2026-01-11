@@ -12,10 +12,10 @@ import type {
 export const makeDecisionKey = (ticketId: TicketId, customerId: CustomerId): DecisionKey =>
   `${ticketId}:${customerId}`;
 
-export const emptyDecision = (): ReviewDecision => ({
-  status: "empty",
-  comment: null,
-});
+// Optional: stable singleton empty decision
+const EMPTY_DECISION: ReviewDecision = { status: "empty", comment: null };
+
+export const emptyDecision = (): ReviewDecision => EMPTY_DECISION;
 
 export const getDecision = (
   state: ReviewState,
@@ -23,7 +23,7 @@ export const getDecision = (
   customerId: CustomerId
 ): ReviewDecision => {
   const key = makeDecisionKey(ticketId, customerId);
-  return state.decisions[key] ?? emptyDecision();
+  return state.decisions[key] ?? EMPTY_DECISION;
 };
 
 export type SetDecisionResult =
@@ -35,12 +35,19 @@ const nowIso = (): string => new Date().toISOString();
 const isNonEmpty = (value: unknown): value is string =>
   typeof value === "string" && value.trim().length > 0;
 
+const hasTicket = (state: ReviewState, ticketId: TicketId) =>
+  state.tickets.some((t) => t.id === ticketId);
+
+const hasCustomer = (state: ReviewState, customerId: CustomerId) =>
+  state.customers.some((c) => c.id === customerId);
+
 /**
  * The ONE place decisions are updated.
  * Enforces rules:
  * - If status === "fail" -> comment is required and must be non-empty
  * - If status !== "fail" -> comment is cleared to null
  * - If status === "empty" -> entry is removed from map (recommended)
+ * - ticketId/customerId must exist in state
  */
 export const setDecision = (
   state: ReviewState,
@@ -49,43 +56,38 @@ export const setDecision = (
   nextStatus: ReviewStatus,
   comment?: string | null
 ): SetDecisionResult => {
+  if (!hasTicket(state, ticketId)) {
+    return { ok: false, error: "Unknown ticketId. Cannot set a decision for a missing ticket." };
+  }
+  if (!hasCustomer(state, customerId)) {
+    return { ok: false, error: "Unknown customerId. Cannot set a decision for a missing customer." };
+  }
+
   const key = makeDecisionKey(ticketId, customerId);
 
-  // Validate inputs
   if (nextStatus === "fail" && !isNonEmpty(comment)) {
     return { ok: false, error: "A comment is required when marking a ticket as Fail." };
   }
 
-  // Build the next decision value
   const nextDecision: ReviewDecision = {
     status: nextStatus,
     comment: nextStatus === "fail" ? comment!.trim() : null,
     updatedAt: nowIso(),
   };
 
-  // Copy decisions map immutably
   const nextDecisions = { ...state.decisions };
 
-  // Recommended: don't store "empty" decisions at all
   if (nextStatus === "empty") {
     delete nextDecisions[key];
   } else {
     nextDecisions[key] = nextDecision;
   }
 
-  return {
-    ok: true,
-    state: {
-      ...state,
-      decisions: nextDecisions,
-    },
-  };
+  return { ok: true, state: { ...state, decisions: nextDecisions } };
 };
 
-/**
- * Optional helper if you want explicit clearing later.
- */
 export const clearAllDecisions = (state: ReviewState): ReviewState => ({
   ...state,
   decisions: {},
 });
+
