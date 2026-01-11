@@ -7,23 +7,23 @@
 ## Phase 0 — Ground Rules (Lock Before Building)
 
 - [X] Confirm no backend integration (UI-only)
-- [ ] Confirm persistence strategy (localStorage / IndexedDB / file)
-- [ ] Confirm Pass / Fail vocabulary set
-- [ ] Confirm Fail → comment required rule (non-negotiable)
+- [X] Confirm persistence strategy (localStorage / IndexedDB / file)
+- [X] Confirm Pass / Fail vocabulary set
+- [X] Confirm Fail → comment required rule (non-negotiable)
 
 ---
 
 ## Phase 1 — Matrix Behavior & State Rules (Define → Implement)
 
-- [ ] **1. Cell interaction rules**
-  - [ ] Define click behavior (empty / pass / fail)
-  - [ ] Implement cell click handling
-  - [ ] Verify behavior matches definition
+- [X] **1. Cell interaction rules**
+  - [X] Define click behavior (empty / pass / fail)
+  - [X] Implement cell click handling
+  - [X] Verify behavior matches definition
 
-- [ ] **2. Allowed state transitions**
-  - [ ] Define legal transitions
-  - [ ] Implement transition guards
-  - [ ] Prevent illegal states in UI
+- [X] **2. Allowed state transitions**
+  - [X] Define legal transitions
+  - [X] Implement transition guards
+  - [X] Prevent illegal states in UI
 
 - [ ] **3. Data persistence**
   - [ ] Define storage method
