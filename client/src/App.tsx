@@ -88,6 +88,9 @@ export default function App() {
           onClick={() => {
             clearSavedState();
             setState(seedState);
+            setTicketId(seedState.tickets[0]?.id ?? "");
+            setCustomerId(seedState.customers[0]?.id ?? "");
+            setComment("");
           }}
           style={{ marginLeft: "auto" }}
         >

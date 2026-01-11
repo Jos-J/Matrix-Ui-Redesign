@@ -25,11 +25,11 @@
   - [X] Implement transition guards
   - [X] Prevent illegal states in UI
 
-- [ ] **3. Data persistence**
-  - [ ] Define storage method
-  - [ ] Implement load on app start
-  - [ ] Implement save on change
-  - [ ] Verify refresh retains data
+- [x] **3. Data persistence**
+  - [x] Define storage method
+  - [x] Implement load on app start
+  - [x] Implement save on change
+  - [x] Verify refresh retains data
 
 ---
 
