@@ -1,7 +1,7 @@
 // src/state/reviewModel.test.ts
 import { describe, it, expect } from "vitest";
-import type { ReviewState } from "../domain/types";
-import { getDecision, setDecision, makeDecisionKey } from "./reviewModel";
+import type { ReviewState } from "@/domain/types";
+import  { getDecision, setDecision, makeDecisionKey } from "@/state/reviewModel";
 
 const baseState = (): ReviewState => ({
   tickets: [{ id: "t1", ticketNumber: "1001" }],
