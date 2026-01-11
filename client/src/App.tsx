@@ -4,6 +4,7 @@ import type { CustomerId, TicketId } from "./domain/types";
 import { seedState } from "./state/seed";
 import { getDecision, setDecision } from "./state/reviewModel";
 import { loadState, saveState, clearSavedState } from "./storage/localStorage";
+// import {pages} from "./pages/matrixPage"
 
 export default function App() {
   const initial = useMemo(() => loadState() ?? seedState, []);
