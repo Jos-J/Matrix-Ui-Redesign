@@ -1,0 +1,68 @@
+/* Page background */
+body {
+  background: linear-gradient(135deg, #eef2f7, #ffffff);
+  min-height: 100vh;
+}
+
+/* Card styling upgrade */
+.card {
+  border: none;
+  border-radius: 12px;
+}
+
+/* Subtle shadow for depth */
+.shadow-sm {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Table polish */
+.table thead {
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+.table tbody tr:hover {
+  background-color: #463d5ce8;
+}
+
+/* Header spacing */
+h2 {
+  font-weight: 600;
+}
+
+/* Button polish */
+/* .btn-primary {
+  border-radius: 8px;
+  padding: 6px 14px;
+} */
+
+.card h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.card {
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+};
+
+.footer {
+  background-color: white;
+  color: #e5e7eb;
+  padding: 16px 0;
+  border-top: 1px solid #374151;
+}
+
+.footer a {
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: #343aeb;
+}
+
