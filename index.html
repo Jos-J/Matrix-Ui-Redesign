@@ -10,7 +10,7 @@
     <title>Matrix</title>
 </head>
 
-<body class ="d-flex flex-column min-vh-100" >
+<body class="d-flex flex-column min-vh-100">
 
     <header>
         <!-- Add header content here -->
@@ -98,18 +98,31 @@
                             <th>Customer 3</th>
                             <th>Customer 4</th>
                             <th>Customer 5</th>
+                            <th>Comments</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr data-ticket-id="1001">
                             <td>#1001</td>
                             <td>Login issue</td>
                             <td>John Doe</td>
                             <td>Utah</td>
-                            <td><select class="form-select">
-                                <option value =""><Select></Select></option>
-                                <option>Fail</option>
-                            </select></td>
+                            <td>
+                                <select class="form-select result-select">
+                                    <option value="">Select</option>
+                                    <option value="pass">Pass</option>
+                                    <option value="fail">Fail</option>
+                                </select>
+                                <!-- Comments Box -->
+                                <textarea class="form-control mt-2 d-none comment-box"
+                                    placeholder="Enter comment..."></textarea>
+
+                                <!-- save button -->
+                                <button class="btn btn-outline-secondary btn-sm mt-2 d-none save-btn">
+                                    Save
+                                </button>
+                                <div class="save-message text-success small mt-1 d-none"> Comment Saved </div>
+                            </td>
                             <td><span class="badge bg-secondary">NA</span></td>
                             <td><span class="badge bg-secondary">NA</span></td>
                             <td> Na</td>
@@ -154,7 +167,7 @@
         </div>
     </footer>
 
-    <script src="assets/script/script.tsx"></script>
+    <script src="assets/script/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
