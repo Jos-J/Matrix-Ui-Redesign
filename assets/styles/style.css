@@ -47,7 +47,7 @@ h2 {
 
 .card:hover {
   transform: translateY(-3px);
-};
+}
 
 .footer {
   background-color: white;
@@ -69,3 +69,78 @@ h2 {
 .comment-box {
   font-size: 0.9rem;
 }
+
+/* tighter main content */
+main.container-fluid {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+/* table card */
+.matrix-card {
+  overflow: hidden;
+}
+
+/* horizontal scroll for wide matrix */
+.matrix-table-wrap {
+  overflow-x: auto;
+}
+
+/* smaller table */
+.matrix-table {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.matrix-table thead th {
+  font-size: 0.8rem;
+  padding: 8px 6px;
+  vertical-align: middle;
+}
+
+.matrix-table td {
+  padding: 8px 6px;
+  vertical-align: top;
+}
+
+/* smaller select boxes */
+.matrix-table .form-select {
+  min-width: 72px;
+  font-size: 12px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 8px;
+  padding-right: 24px;
+}
+
+/* comments column */
+.matrix-table .comments-cell {
+  min-width: 220px;
+  max-width: 260px;
+  white-space: normal;
+  word-break: break-word;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+/* comment entries inside comments column */
+.comment-entry {
+  margin-bottom: 4px;
+  padding: 2px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* soften hover instead of dark purple */
+.table tbody tr:hover {
+  background-color: #f4f7fb;
+}
+
+/* smaller cards at top */
+.card small {
+  font-size: 0.75rem;
+}
+
+.card h5 {
+  font-size: 1.2rem;
+}
+

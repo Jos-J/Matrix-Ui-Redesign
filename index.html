@@ -16,7 +16,7 @@
         <!-- Add header content here -->
     </header>
 
-    <main class="container my-4 flex-grow-1">
+    <main class="container-fluid mt-3 px-2">
 
         <!-- Page Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -82,63 +82,67 @@
                 <button class="btn btn-outline-secondary w-100">Reset</button>
             </div>
         </div> -->
-        
+
 
         <!-- Ticket Table -->
-        <div class="card shadow-sm">
+        <div class="card shadow-sm matrix-card">
             <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Ticket_No</th>
-                            <th>Title</th>
-                            <th>Assigned To</th>
-                            <th>Created By</th>
-                            <th>Customer 1</th>
-                            <th>Customer 2</th>
-                            <th>Customer 3</th>
-                            <th>Customer 4</th>
-                            <th>Customer 5</th>
-                            <th>Customer 6</th>
-                            <th>Customer 7</th>
-                            <th>Customer 8</th>
-                            <th>Customer 9</th>
-                            <th>Customer 10</th>
-                            <th>Customer 11</th>
-                            <th>Customer 12</th>
-                            <th>Customer 13</th>
-                            <th>Customer 14</th>
-                            <th>Customer 15</th>
-                            <th>Comments</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-ticket-id="1001">
-                            <td>#1001</td>
-                            <td>Login issue</td>
-                            <td>John Doe</td>
-                            <td>Utah</td>
-                        </tr>
+                <div class="table-responsive matrix-table-wrap">
+                    <table class="table table-sm table-hover mb-0 matrix-table">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Ticket_No</th>
+                                <th>Title</th>
+                                <th>Assigned To</th>
+                                <th>Created By</th>
+                                <th>Customer 1</th>
+                                <th>Customer 2</th>
+                                <th>Customer 3</th>
+                                <th>Customer 4</th>
+                                <th>Customer 5</th>
+                                <th>Customer 6</th>
+                                <th>Customer 7</th>
+                                <th>Customer 8</th>
+                                <th>Customer 9</th>
+                                <th>Customer 10</th>
+                                <th>Customer 11</th>
+                                <th>Customer 12</th>
+                                <th>Customer 13</th>
+                                <th>Customer 14</th>
+                                <th>Customer 15</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ticket-id="1001">
+                                <td>#1001</td>
+                                <td>Login issue</td>
+                                <td>John Doe</td>
+                                <td>Utah</td>
+                                <!-- Customer cells  -->
+                                <td class="comments-cell"></td>
+                            </tr>
 
-                        <tr data-ticket-id="1002">
-                            <td>#1002</td>
-                            <td>Payment error</td>
-                            <td>Sarah Lee</td>
-                            <td>Arizona</td>
-                        </tr>
+                            <tr data-ticket-id="1002">
+                                <td>#1002</td>
+                                <td>Payment error</td>
+                                <td>Sarah Lee</td>
+                                <td>Arizona</td>
+                                <td class="comments-cell"></td>
+                            </tr>
 
-                        <tr data-ticket-id="1003">
-                            <td>#1003</td>
-                            <td>Dashboard bug</td>
-                            <td>Robert Lee</td>
-                            <td>Dallas</td>
-                            
-                        </tr>
-                    </tbody>
-                </table>
+                            <tr data-ticket-id="1003">
+                                <td>#1003</td>
+                                <td>Dashboard bug</td>
+                                <td>Robert Lee</td>
+                                <td>Dallas</td>
+                                <td class="comments-cell"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
     </main>
 
     <footer class="footer">
