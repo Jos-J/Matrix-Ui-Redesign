@@ -1,5 +1,6 @@
 const CUSTOMER_COUNT = 15;
 
+
 // ---------- Generate customer dropdown columns ----------
 document.querySelectorAll("tr[data-ticket-id]").forEach((row) => {
   const commentsCell = row.querySelector(".comments-cell");
@@ -206,7 +207,7 @@ function updateSummaryCards() {
   const completed = pass + fail;
 
   const totalTickets = document.querySelectorAll("tr[data-ticket-id]").length;
-  const totalPossible = totalTickets * 15;
+  const totalPossible = totalTickets * CUSTOMER_COUNT;
 
   const percent = totalPossible
     ? Math.round((completed / totalPossible) * 100)
@@ -216,9 +217,15 @@ function updateSummaryCards() {
   const failEl = document.getElementById("failCount");
   const percentEl = document.getElementById("completePercent");
 
+  const completedEl = document.getElementById("completedCount");
+
   if (passEl) passEl.textContent = pass;
   if (failEl) failEl.textContent = fail;
   if (percentEl) percentEl.textContent = `${percent}%`;
+
+  if (completedEl) {
+    completedEl.textContent = `${completed} / ${totalPossible}`;
+  }
 }
 
 function escapeHtml(str) {
