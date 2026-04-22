@@ -43,6 +43,14 @@ document.querySelectorAll("tr[data-ticket-id]").forEach((row) => {
 
     if (!select || !commentBox || !saveBtn) return;
 
+    // set initial state based on existing value
+    saveBtn.disabled = !commentBox.value.trim();
+
+    // enable/disable on typing
+    commentBox.addEventListener("input", () => {
+      saveBtn.disabled = !commentBox.value.trim();
+    });
+
     const resultKey = `ticket-result-${ticketId}-customer-${customerId}`;
     const commentKey = `ticket-comment-${ticketId}-customer-${customerId}`;
 
@@ -83,7 +91,15 @@ document.querySelectorAll("tr[data-ticket-id]").forEach((row) => {
     });
 
     saveBtn.addEventListener("click", function () {
-      localStorage.setItem(commentKey, commentBox.value.trim());
+      const comment = commentBox.value.trim();
+
+      if (!comment) {
+        commentBox.classList.add("border-danger");
+        return;
+      }
+
+      commentBox.classList.remove("border-danger");
+      localStorage.setItem(commentKey, comment);
 
       if (saveMessage) {
         saveMessage.classList.remove("d-none");
