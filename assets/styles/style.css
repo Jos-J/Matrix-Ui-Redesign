@@ -51,13 +51,13 @@ h2 {
 
 .footer {
   background-color: white;
-  color: #e5e7eb;
+  color: black;
   padding: 16px 0;
   border-top: 1px solid #374151;
 }
 
 .footer a {
-  color: #9ca3af;
+  color: black;
   text-decoration: none;
   transition: color 0.2s ease;
 }
