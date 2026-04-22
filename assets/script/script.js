@@ -1,62 +1,67 @@
 document.querySelectorAll("tr[data-ticket-id]").forEach((row) => {
   const ticketId = row.dataset.ticketId;
-  const select = row.querySelector(".result-select");
-  const commentBox = row.querySelector(".comment-box");
-  const saveBtn = row.querySelector(".save-btn");
-  const savedMessage = row.querySelector(".saved-message");
 
-  const resultKey = `ticket-result-${ticketId}`;
-  const commentKey = `ticket-comment-${ticketId}`;
+  row.querySelectorAll(".customer-review").forEach((reviewBox) => {
+    const customerId = reviewBox.dataset.customer;
 
-  const savedResult = localStorage.getItem(resultKey);
-  const savedComment = localStorage.getItem(commentKey);
+    const select = reviewBox.querySelector(".result-select");
+    const commentBox = reviewBox.querySelector(".comment-box");
+    const saveBtn = reviewBox.querySelector(".save-btn");
+    const savedMessage = reviewBox.querySelector(".save-message");
 
-  if (!select || !commentBox || !saveBtn) return;
+    if (!select || !commentBox || !saveBtn) return;
 
-  if (savedResult) {
-    select.value = savedResult;
-    updateSelectStyle(select, savedResult);
-    commentBox.classList.remove("d-none");
-    saveBtn.classList.remove("d-none");
-  }
+    const resultKey = `ticket-result-${ticketId}-customer-${customerId}`;
+    const commentKey = `ticket-comment-${ticketId}-customer-${customerId}`;
 
-  if (savedComment) {
-    commentBox.value = savedComment;
-  }
+    const savedResult = localStorage.getItem(resultKey);
+    const savedComment = localStorage.getItem(commentKey);
 
-  select.addEventListener("change", function () {
-    const value = this.value;
-
-    this.classList.remove("bg-success", "bg-danger", "text-white");
-
-    if (value === "pass" || value === "fail") {
+    if (savedResult) {
+      select.value = savedResult;
+      updateSelectStyle(select, savedResult);
       commentBox.classList.remove("d-none");
       saveBtn.classList.remove("d-none");
-      updateSelectStyle(this, value);
-      localStorage.setItem(resultKey, value);
-    } else {
-      commentBox.classList.add("d-none");
-      saveBtn.classList.add("d-none");
-      localStorage.removeItem(resultKey);
-      localStorage.removeItem(commentKey);
-      commentBox.value = "";
     }
 
-    if (savedMessage) {
-      savedMessage.classList.add("d-none");
+    if (savedComment) {
+      commentBox.value = savedComment;
     }
-  });
 
-  saveBtn.addEventListener("click", function () {
-    localStorage.setItem(commentKey, commentBox.value.trim());
+    select.addEventListener("change", function () {
+      const value = this.value;
 
-    if (savedMessage) {
-      savedMessage.classList.remove("d-none");
+      this.classList.remove("bg-success", "bg-danger", "text-white");
 
-      setTimeout(() => {
+      if (value === "pass" || value === "fail") {
+        commentBox.classList.remove("d-none");
+        saveBtn.classList.remove("d-none");
+        updateSelectStyle(this, value);
+        localStorage.setItem(resultKey, value);
+      } else {
+        commentBox.classList.add("d-none");
+        saveBtn.classList.add("d-none");
+        localStorage.removeItem(resultKey);
+        localStorage.removeItem(commentKey);
+        commentBox.value = "";
+      }
+
+      if (savedMessage) {
         savedMessage.classList.add("d-none");
-      }, 1500);
-    }
+      }
+    });
+
+    saveBtn.addEventListener("click", function () {
+      localStorage.setItem(commentKey, commentBox.value.trim());
+
+      if (savedMessage) {
+        savedMessage.classList.remove("d-none");
+
+        setTimeout(() => {
+          savedMessage.classList.add("d-none");
+        }, 1500);
+      }
+    });
   });
 });
 
