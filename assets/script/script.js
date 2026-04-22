@@ -196,13 +196,21 @@ function updateSummaryCards() {
   let pass = 0;
   let fail = 0;
 
-  document.querySelectorAll(".result-select").forEach((select) => {
+  const selects = document.querySelectorAll(".result-select");
+
+  selects.forEach((select) => {
     if (select.value === "pass") pass++;
     if (select.value === "fail") fail++;
   });
 
-  const totalReviewed = pass + fail;
-  const percent = totalReviewed ? Math.round((pass / totalReviewed) * 100) : 0;
+  const completed = pass + fail;
+
+  const totalTickets = document.querySelectorAll("tr[data-ticket-id]").length;
+  const totalPossible = totalTickets * 15;
+
+  const percent = totalPossible
+    ? Math.round((completed / totalPossible) * 100)
+    : 0;
 
   const passEl = document.getElementById("passCount");
   const failEl = document.getElementById("failCount");
