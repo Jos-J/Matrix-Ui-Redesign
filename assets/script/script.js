@@ -202,6 +202,38 @@ function renderCommentsForRow(row) {
   });
 }
 
+function openCommentsModal(ticketId) {
+  const modal = new bootstrap.Modal(document.getElementById("commentModal"));
+
+  const modalTitle = document.getElementById("commentModalLabel");
+  const modalBody = document.getElementById("modalCommentInput"); // 
+
+  modalTitle.textContent = `Comments for Tickets #${ticketId}`;
+
+  let html ="";
+
+  for (let i = 1; i <= CUSTOMER_COUNT; i++) {
+    const comment =localStorage.getItem(`ticket-commet-${ticketId}-customer-${i}`);
+
+    if (commet) {
+      html += `
+      <div class="mb-2">
+      <strong>Customer ${i}:</strong><br>
+      ${comment}
+      </div>
+      `;
+      }
+  }
+
+
+modalBody.outerHTML = `
+<div id="modalCommentsInput">
+${html || "<span class='text-muted'> No coments </span>"}
+`;
+
+modal.show();
+}
+
 function updateSummaryCards() {
   let pass = 0;
   let fail = 0;
