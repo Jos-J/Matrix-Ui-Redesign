@@ -175,22 +175,31 @@ function renderCommentsForRow(row) {
 
   if (!commentsCell) return;
 
-  let html = "";
+  let commentCount = 0;
 
   for (let i = 1; i <= CUSTOMER_COUNT; i++) {
-    const result = localStorage.getItem(`ticket-result-${ticketId}-customer-${i}`);
     const comment = localStorage.getItem(`ticket-comment-${ticketId}-customer-${i}`);
-
-    if (result || comment) {
-      html += `
-        <div class="comment-entry">
-          <strong>C${i}:</strong> ${comment ? escapeHtml(comment) : "-"}
-        </div>
-      `;
-    }
+    if (comment) commentCount++;
   }
 
-  commentsCell.innerHTML = html || `<span class="text-muted">No comments</span>`;
+  if (commentCount ===0) {
+    commentsCell.innerHTML = `<span class="text-muted">No comments</span>`;
+    return;
+
+  }
+
+  commentsCell.innerHTML = `
+  <button class="btn btn-link btn-sm p-0 view-comments-btn">
+    <View Comments (${commentCount})
+    </button>
+  `;
+
+  // 🔥 attach click handler
+  const btn = commentsCell.querySelector(".view-comments-btn");
+
+  btn.addEventListener("click", () => {
+    openCommentsModal(ticketId);
+  });
 }
 
 function updateSummaryCards() {
