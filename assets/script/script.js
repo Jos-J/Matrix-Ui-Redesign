@@ -188,14 +188,14 @@ function renderCommentsForRow(row) {
 
   }
 
-  commentsCell.innerHTML = `
-  <button
-  type="button"
-  class="btn btn-link btn-sm p-0 view-comments-btn"
-  data-ticket-id="${ticketId}">
-  View comments (${commentCount})
-    </button>
-  `;
+ commentsCell.innerHTML = `
+  <button 
+    type="button"
+    class="btn btn-link btn-sm p-0 view-comments-btn"
+    data-ticket-id="${ticketId}">
+    View Comments (${commentCount})
+  </button>
+`;
 
   // 🔥 attach click handler
   const btn = commentsCell.querySelector(".view-comments-btn");
@@ -210,9 +210,15 @@ function openCommentsModal(ticketId) {
   const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
 
   const modalTitle = document.getElementById("commentModalLabel");
+  const modalCustomerLabel = document.getElementById("modalCustomerLabel");
   const modalBody = document.getElementById("modalCommentInput");
+  const saveBtn = document.getElementById("saveCommentModalBtn");
 
   modalTitle.textContent = `Comments for Ticket #${ticketId}`;
+
+  if (modalCustomerLabel) {
+    modalCustomerLabel.textContent = "";
+  }
 
   let html = "";
 
@@ -221,7 +227,7 @@ function openCommentsModal(ticketId) {
 
     if (comment) {
       html += `
-        <div class="mb-2">
+        <div class="mb-2 border-bottom pb-2">
           <strong>Customer ${i}:</strong><br>
           ${escapeHtml(comment)}
         </div>
@@ -230,6 +236,10 @@ function openCommentsModal(ticketId) {
   }
 
   modalBody.innerHTML = html || "<span class='text-muted'>No comments</span>";
+
+  if (saveBtn) {
+    saveBtn.classList.add("d-none");
+  }
 
   modal.show();
 }
