@@ -281,7 +281,7 @@ document.addEventListener("click", function (event) {
   if (event.target.classList.contains("view-comments-btn")) {
     const ticketId = event.target.dataset.ticketId;
 
-    console.log("Opening modal for:", ticketId); // 👈 debug
+    console.log("Opening modal for:", ticketId); //  debug
 
     openCommentsModal(ticketId);
   }
