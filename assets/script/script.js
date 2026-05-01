@@ -182,15 +182,18 @@ function renderCommentsForRow(row) {
     if (comment) commentCount++;
   }
 
-  if (commentCount ===0) {
+  if (commentCount === 0) {
     commentsCell.innerHTML = `<span class="text-muted">No comments</span>`;
     return;
 
   }
 
   commentsCell.innerHTML = `
-  <button class="btn btn-link btn-sm p-0 view-comments-btn">
-    <View Comments (${commentCount})
+  <button
+  type="button"
+  class="btn btn-link btn-sm p-0 view-comments-btn"
+  data-ticket-id="${ticketId}">
+  View comments (${commentCount})
     </button>
   `;
 
@@ -203,35 +206,32 @@ function renderCommentsForRow(row) {
 }
 
 function openCommentsModal(ticketId) {
-  const modal = new bootstrap.Modal(document.getElementById("commentModal"));
+  const modalEl = document.getElementById("commentModal");
+  const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
 
   const modalTitle = document.getElementById("commentModalLabel");
-  const modalBody = document.getElementById("modalCommentInput"); // 
+  const modalBody = document.getElementById("modalCommentInput");
 
-  modalTitle.textContent = `Comments for Tickets #${ticketId}`;
+  modalTitle.textContent = `Comments for Ticket #${ticketId}`;
 
-  let html ="";
+  let html = "";
 
   for (let i = 1; i <= CUSTOMER_COUNT; i++) {
-    const comment =localStorage.getItem(`ticket-commet-${ticketId}-customer-${i}`);
+    const comment = localStorage.getItem(`ticket-comment-${ticketId}-customer-${i}`);
 
-    if (commet) {
+    if (comment) {
       html += `
-      <div class="mb-2">
-      <strong>Customer ${i}:</strong><br>
-      ${comment}
-      </div>
+        <div class="mb-2">
+          <strong>Customer ${i}:</strong><br>
+          ${escapeHtml(comment)}
+        </div>
       `;
-      }
+    }
   }
 
+  modalBody.innerHTML = html || "<span class='text-muted'>No comments</span>";
 
-modalBody.outerHTML = `
-<div id="modalCommentsInput">
-${html || "<span class='text-muted'> No coments </span>"}
-`;
-
-modal.show();
+  modal.show();
 }
 
 function updateSummaryCards() {
@@ -277,3 +277,12 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
 }
+document.addEventListener("click", function (event) {
+  if (event.target.classList.contains("view-comments-btn")) {
+    const ticketId = event.target.dataset.ticketId;
+
+    console.log("Opening modal for:", ticketId); // 👈 debug
+
+    openCommentsModal(ticketId);
+  }
+});
