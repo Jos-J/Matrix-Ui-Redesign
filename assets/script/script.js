@@ -1,10 +1,8 @@
 const CUSTOMER_COUNT = 15;
 
-
 // ---------- Generate customer dropdown columns ----------
 document.querySelectorAll("tr[data-ticket-id]").forEach((row) => {
   const commentsCell = row.querySelector(".comments-cell");
-
   if (!commentsCell) return;
 
   for (let i = 1; i <= CUSTOMER_COUNT; i++) {
@@ -27,11 +25,12 @@ document.querySelectorAll("tr[data-ticket-id]").forEach((row) => {
 // ---------- Modal setup ----------
 const commentModalEl = document.getElementById("commentModal");
 const modalCommentInput = document.getElementById("modalCommentInput");
+const modalCommentsList = document.getElementById("modalCommentsList");
 const modalCustomerLabel = document.getElementById("modalCustomerLabel");
 const saveCommentModalBtn = document.getElementById("saveCommentModalBtn");
 
 const commentModal = commentModalEl
-  ? new bootstrap.Modal(commentModalEl)
+  ? bootstrap.Modal.getOrCreateInstance(commentModalEl)
   : null;
 
 let activeCommentContext = null;
@@ -40,7 +39,6 @@ if (commentModalEl) {
   commentModalEl.addEventListener("hidden.bs.modal", function () {
     if (activeCommentContext) {
       const { select, ticketId, customerId } = activeCommentContext;
-
       const resultKey = `ticket-result-${ticketId}-customer-${customerId}`;
       const saved = localStorage.getItem(resultKey) || "";
 
@@ -48,13 +46,25 @@ if (commentModalEl) {
       updateSelectStyle(select, saved);
     }
 
-    modalCommentInput.value = "";
+    if (modalCommentInput) {
+      modalCommentInput.value = "";
+      modalCommentInput.classList.remove("d-none");
+    }
+
+    if (modalCommentsList) {
+      modalCommentsList.innerHTML = "";
+      modalCommentsList.classList.add("d-none");
+    }
+
+    if (saveCommentModalBtn) {
+      saveCommentModalBtn.classList.remove("d-none");
+    }
+
     activeCommentContext = null;
   });
 
-  // Focus textarea when modal opens
   commentModalEl.addEventListener("shown.bs.modal", function () {
-    if (modalCommentInput) {
+    if (modalCommentInput && !modalCommentInput.classList.contains("d-none")) {
       modalCommentInput.focus();
     }
   });
@@ -67,11 +77,9 @@ document.querySelectorAll("tr[data-ticket-id]").forEach((row) => {
   row.querySelectorAll(".customer-review").forEach((reviewBox) => {
     const customerId = reviewBox.dataset.customer;
     const select = reviewBox.querySelector(".result-select");
-
     if (!select) return;
 
     const resultKey = `ticket-result-${ticketId}-customer-${customerId}`;
-
     const savedResult = localStorage.getItem(resultKey);
 
     if (savedResult) {
@@ -88,8 +96,6 @@ document.querySelectorAll("tr[data-ticket-id]").forEach((row) => {
       if (value === "pass" || value === "fail") {
         localStorage.setItem(resultKey, value);
 
-        const existingComment = localStorage.getItem(commentKey) || "";
-
         activeCommentContext = {
           row,
           ticketId,
@@ -98,12 +104,30 @@ document.querySelectorAll("tr[data-ticket-id]").forEach((row) => {
           select
         };
 
+        const existingComment = localStorage.getItem(commentKey) || "";
+
+        // Edit mode
+        if (modalCommentInput) {
+          modalCommentInput.classList.remove("d-none");
+          modalCommentInput.value = existingComment;
+        }
+
+        if (modalCommentsList) {
+          modalCommentsList.classList.add("d-none");
+          modalCommentsList.innerHTML = "";
+        }
+
+        if (saveCommentModalBtn) {
+          saveCommentModalBtn.classList.remove("d-none");
+        }
+
         if (modalCustomerLabel) {
           modalCustomerLabel.textContent = `Ticket #${ticketId} - Customer ${customerId}`;
         }
 
-        if (modalCommentInput) {
-          modalCommentInput.value = existingComment;
+        const modalTitle = document.getElementById("commentModalLabel");
+        if (modalTitle) {
+          modalTitle.textContent = "Add Comment";
         }
 
         if (commentModal) {
@@ -140,21 +164,12 @@ if (saveCommentModalBtn) {
     renderCommentsForRow(row);
     updateSummaryCards();
 
+    activeCommentContext = null;
+    document.activeElement.blur();
+
     if (commentModal) {
       commentModal.hide();
     }
-
-    activeCommentContext = null;
-  });
-}
-
-// Optional: if modal closes without saving, just clear context
-if (commentModalEl) {
-  commentModalEl.addEventListener("hidden.bs.modal", function () {
-    if (modalCommentInput) {
-      modalCommentInput.value = "";
-    }
-    activeCommentContext = null;
   });
 }
 
@@ -172,7 +187,6 @@ function updateSelectStyle(select, value) {
 function renderCommentsForRow(row) {
   const ticketId = row.dataset.ticketId;
   const commentsCell = row.querySelector(".comments-cell");
-
   if (!commentsCell) return;
 
   let commentCount = 0;
@@ -185,42 +199,37 @@ function renderCommentsForRow(row) {
   if (commentCount === 0) {
     commentsCell.innerHTML = `<span class="text-muted">No comments</span>`;
     return;
-
   }
 
- commentsCell.innerHTML = `
-  <button 
-    type="button"
-    class="btn btn-link btn-sm p-0 view-comments-btn"
-    data-ticket-id="${ticketId}">
-    View Comments (${commentCount})
-  </button>
-`;
-
-  // 🔥 attach click handler
-  const btn = commentsCell.querySelector(".view-comments-btn");
-
-  btn.addEventListener("click", () => {
-    openCommentsModal(ticketId);
-  });
+  commentsCell.innerHTML = `
+    <button 
+      type="button"
+      class="btn btn-link btn-sm p-0 view-comments-btn"
+      data-ticket-id="${ticketId}">
+      View Comments (${commentCount})
+    </button>
+  `;
 }
 
 function openCommentsModal(ticketId) {
-  const modalEl = document.getElementById("commentModal");
-  const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  if (!commentModal || !modalCommentsList || !modalCommentInput) return;
 
   const modalTitle = document.getElementById("commentModalLabel");
-  const modalCustomerLabel = document.getElementById("modalCustomerLabel");
-  const modalBody = document.getElementById("modalCommentInput");
-  const saveBtn = document.getElementById("saveCommentModalBtn");
 
-  modalCommentInput.classList.add("d-none");
-  modalCommentsList.classList.remove("d-none");
-
-  modalTitle.textContent = `Comments for Ticket #${ticketId}`;
+  if (modalTitle) {
+    modalTitle.textContent = `Comments for Ticket #${ticketId}`;
+  }
 
   if (modalCustomerLabel) {
     modalCustomerLabel.textContent = "";
+  }
+
+  // View mode
+  modalCommentInput.classList.add("d-none");
+  modalCommentsList.classList.remove("d-none");
+
+  if (saveCommentModalBtn) {
+    saveCommentModalBtn.classList.add("d-none");
   }
 
   let html = "";
@@ -238,28 +247,22 @@ function openCommentsModal(ticketId) {
     }
   }
 
-  modalBody.innerHTML = html || "<span class='text-muted'>No comments</span>";
+  modalCommentsList.innerHTML = html || "<span class='text-muted'>No comments</span>";
 
-  if (saveBtn) {
-    saveBtn.classList.add("d-none");
-  }
-
-  modal.show();
+  activeCommentContext = null;
+  commentModal.show();
 }
 
 function updateSummaryCards() {
   let pass = 0;
   let fail = 0;
 
-  const selects = document.querySelectorAll(".result-select");
-
-  selects.forEach((select) => {
+  document.querySelectorAll(".result-select").forEach((select) => {
     if (select.value === "pass") pass++;
     if (select.value === "fail") fail++;
   });
 
   const completed = pass + fail;
-
   const totalTickets = document.querySelectorAll("tr[data-ticket-id]").length;
   const totalPossible = totalTickets * CUSTOMER_COUNT;
 
@@ -270,16 +273,12 @@ function updateSummaryCards() {
   const passEl = document.getElementById("passCount");
   const failEl = document.getElementById("failCount");
   const percentEl = document.getElementById("completePercent");
-
   const completedEl = document.getElementById("completedCount");
 
   if (passEl) passEl.textContent = pass;
   if (failEl) failEl.textContent = fail;
   if (percentEl) percentEl.textContent = `${percent}%`;
-
-  if (completedEl) {
-    completedEl.textContent = `${completed} / ${totalPossible}`;
-  }
+  if (completedEl) completedEl.textContent = `${completed} / ${totalPossible}`;
 }
 
 function escapeHtml(str) {
@@ -290,12 +289,14 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
 }
+
+// ---------- View comments click handler ----------
 document.addEventListener("click", function (event) {
-  if (event.target.classList.contains("view-comments-btn")) {
-    const ticketId = event.target.dataset.ticketId;
+  const btn = event.target.closest(".view-comments-btn");
+  if (!btn) return;
 
-    console.log("Opening modal for:", ticketId); //  debug
+  const ticketId = btn.dataset.ticketId;
+  if (!ticketId) return;
 
-    openCommentsModal(ticketId);
-  }
+  openCommentsModal(ticketId);
 });
