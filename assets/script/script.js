@@ -214,6 +214,9 @@ function openCommentsModal(ticketId) {
   const modalBody = document.getElementById("modalCommentInput");
   const saveBtn = document.getElementById("saveCommentModalBtn");
 
+  modalCommentInput.classList.add("d-none");
+  modalCommentsList.classList.remove("d-none");
+
   modalTitle.textContent = `Comments for Ticket #${ticketId}`;
 
   if (modalCustomerLabel) {
